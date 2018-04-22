@@ -1,17 +1,12 @@
-# **Behavioral Cloning
-    Project 3 Udacity Self-Driving Car Nanodegree** 
+# **Behavioral Cloning**
+## **Project 3 Udacity Self-Driving Car Nanodegree** 
 
 ## Writeup
-
-### You can use this file as a template for your writeup if you want to submit it as a markdown file, but feel free to use some other method and submit a pdf if you prefer.
-
 ---
 
-**Behavioral Cloning Project**
-
-The goals / steps of this project are the following:
-* Use the simulator to collect data of good driving behavior
-* Build, a convolution neural network in Keras that predicts steering angles from images
+The goals 
+* Use the simulator to collect data driving behavior
+* Build, a convolution neural network in Keras that predicts steering angles from driving images
 * Train and validate the model with a training and validation set
 * Test that the model successfully drives around track one without leaving the road
 * Summarize the results with a written report
@@ -55,9 +50,23 @@ The model.py file contains the code for training and saving the convolution neur
 
 #### 1. An appropriate model architecture has been employed
 
-My model consists of a convolution neural network with 3x3 filter sizes and depths between 32 and 128 (model.py lines 18-24) 
+The architecture used was adapted from a former Udacity student's Tensorflow [Traffic Sign Classifiers project](https://github.com/jeremy-shannon/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb)- itself an adaptation of Sermanet/LeCunn classifier. It uses It uses three convolutional layer and a singer linear layer. After the first two convolutional layers the outputs are passed through Relu and a MaxPooling node. After the third convolution the output is flattened and concatenated with the flattened output of the second max pool. This is passed through a single linear layer. 
 
-The model includes RELU layers to introduce nonlinearity (code line 20), and the data is normalized in the model using a Keras lambda layer (code line 18). 
+
+| Layer No  | Functions     |Dimensions                                   |
+|-----------|---------------|---------------------------------------------|
+|Layer1:    |Conv           |kernel = 3x3, strides = 2 |
+|           |Relu      |                                             |
+|           |Max_Pool       |kernel = 3x3, strides = 2                  |
+|Layer2:    |Conv           |kernel = 5x5, strides = 1 |
+|           |Relu        |                                             |  
+|           |Max_Pool       |kernel = 2x2, strides = 3 |
+|Layer3:  |Conv           |kernel = 5x5, strides=2   |
+|Flatten:    |Merge of Layer 3 and Layer 2 MaxPool |                    |    
+|            |Dopout         |keep_prob = 0.6            |
+|Layer4:    |Fully Connect  |
+
+
 
 #### 2. Attempts to reduce overfitting in the model
 
