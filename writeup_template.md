@@ -12,15 +12,6 @@ The goals
 * Summarize the results with a written report
 
 
-[//]: # (Image References)
-
-[image1]: ./examples/placeholder.png "Model Visualization"
-[image2]: ./examples/placeholder.png "Grayscaling"
-[image3]: ./examples/placeholder_small.png "Recovery Image"
-[image4]: ./examples/placeholder_small.png "Recovery Image"
-[image5]: ./examples/placeholder_small.png "Recovery Image"
-[image6]: ./examples/placeholder_small.png "Normal Image"
-[image7]: ./examples/placeholder_small.png "Flipped Image"
 
 ## Rubric Points
 ### Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.  
@@ -48,9 +39,10 @@ The model.py file contains the code for training and saving the convolution neur
 
 ### Model Architecture and Training Strategy
 
-#### 1. An appropriate model architecture has been employed
+#### 1. Model Architecture 
 
-The architecture used was adapted from a former Udacity student's Tensorflow [Traffic Sign Classifiers project](https://github.com/jeremy-shannon/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb)- itself an adaptation of Sermanet/LeCunn classifier. It uses It uses three convolutional layer and a singer linear layer. After the first two convolutional layers the outputs are passed through Relu and a MaxPooling node. After the third convolution the output is flattened and concatenated with the flattened output of the second max pool. This is passed through a single linear layer. 
+The architecture used was adapted from a former Udacity student's Tensorflow [Traffic Sign Classifiers project](https://github.com/jeremy-shannon/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb)- itself an adaptation of Sermanet/LeCunn classifier. It uses three convolutional layer and a singer linear layer. After the first two convolutional layers, the outputs are passed through a Relu and a MaxPooling node. The output of the third convolution is flattened and concatenated with the flattened output of the second max pool. This is then passed through a single linear layer. 
+
 
 
 | Layer No  | Functions     |Dimensions                                   |
@@ -65,6 +57,14 @@ The architecture used was adapted from a former Udacity student's Tensorflow [Tr
 |Flatten:    |Merge of Layer 3 and Layer 2 MaxPool |                    |    
 |            |Dopout         |keep_prob = 0.6            |
 |Layer4:    |Fully Connect  |
+
+
+
+#### 2. Data Collection and Training Strategy
+
+The original data used for training and validation included two passes around the track (counter clockwise) of straight line driving and one pass of straight line driving around the track in the opposite directon (clockwise). This resulted in autonomous driving that tended to veer off the track on longer tight curves and at key locations (such as bridges and the "dirt pull off"). The combat this, additional data was collected 1, that continously veered toward the curbs and "jerked" back to the center, and 2) that repeatedly veered toward those key locations (bridge, dirt pull off) and "jerked" back to the center. This helped train the model to avoid driving off of an dinto these key locations. 
+
+T
 
 
 
