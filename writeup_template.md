@@ -58,6 +58,8 @@ The architecture used was adapted from a former Udacity student's Tensorflow [Tr
 |            |Dopout         |keep_prob = 0.6            |
 |Layer4:    |Fully Connect  |
 
+Other architectures were experimented with, including a version of the Nvidia architecture discussed in lecture, however the initial Training and Validation losses were much higher ( >= 3.0) so the architecture above was kept.
+
 For parameter tuning the Adam optimizer was used to automatically adjust the learning rate. Epoches were adjusted such that the Validation to Testing Loss ration was low. This settled at about 5. Epochs greater that this lead to increading validation loss (see Model Fitting below).
 
 #### 2. Data Collection, Preprocessing, and Training Strategy
@@ -72,35 +74,27 @@ Finally, data was collected driving along the second track, one time around, in 
 For data preprocessing normalization was used via the Lamdba() function using the equation (img/255 - 0.5) as suggested in lecture. Images were cropped by 50 rows from the top and 20 rows from the bottom, also suggested in lecture. Additional preprocessing methods were tested (converting to gray-scale and Canny edge detection) however this methods did not improve autonomous driving. 
 
 
+#### 2. Model Fitting
+
+At Epochs = 5, the Traning Loss = 
+## update number
+and Validtion Loss = 
+## update number
+Dropouts were added before the linear layer and after the second convolutional layer (layer 2), however this did not improve the the validation loss in relation to the training loss (see chart below). 
+
+### INsert Chart
 
 
-#### 2. Attempts to reduce overfitting in the model
 
-The model contains dropout layers in order to reduce overfitting (model.py lines 21). 
+Additionally, combat overfitting additional data was used, such as training on the second track. 
 
-The model was trained and validated on different data sets to ensure that the model was not overfitting (code line 10-16). The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
 
-#### 3. Model parameter tuning
 
-The model used an adam optimizer, so the learning rate was not tuned manually (model.py line 25).
 
-#### 4. Appropriate training data
 
-Training data was chosen to keep the vehicle driving on the road. I used a combination of center lane driving, recovering from the left and right sides of the road ... 
 
-For details about how I created the training data, see the next section. 
 
-### Model Architecture and Training Strategy
 
-#### 1. Solution Design Approach
-
-The overall strategy for deriving a model architecture was to ...
-
-My first step was to use a convolution neural network model similar to the ... I thought this model might be appropriate because ...
-
-In order to gauge how well the model was working, I split my image and steering angle data into a training and validation set. I found that my first model had a low mean squared error on the training set but a high mean squared error on the validation set. This implied that the model was overfitting. 
-
-To combat the overfitting, I modified the model so that ...
 
 Then I ... 
 
