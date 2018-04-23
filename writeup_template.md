@@ -5,7 +5,7 @@
 ---
 
 The goals 
-* Use the simulator to collect data driving behavior
+* Use the simulator to collect driving behavior data
 * Build, a convolution neural network in Keras that predicts steering angles from driving images
 * Train and validate the model with a training and validation set
 * Test that the model successfully drives around track one without leaving the road
@@ -60,11 +60,17 @@ The architecture used was adapted from a former Udacity student's Tensorflow [Tr
 
 
 
-#### 2. Data Collection and Training Strategy
+#### 2. Data Collection, Preprocessing, and Training Strategy
 
-The original data used for training and validation included two passes around the track (counter clockwise) of straight line driving and one pass of straight line driving around the track in the opposite directon (clockwise). This resulted in autonomous driving that tended to veer off the track on longer tight curves and at key locations (such as bridges and the "dirt pull off"). The combat this, additional data was collected 1, that continously veered toward the curbs and "jerked" back to the center, and 2) that repeatedly veered toward those key locations (bridge, dirt pull off) and "jerked" back to the center. This helped train the model to avoid driving off of an dinto these key locations. 
+The original data used for training and validation included two passes around the track (counter-clockwise) of straight line driving and one pass of straight line driving around the track in the opposite directon (clockwise). This resulted in autonomous driving that tended veer off the track on longer, tighter curves and at key locations (such as bridges and the "dirt pull-off"). To combat this, additional data was collected, 
 
-T
+  1) that continously veered toward the curbs and "jerked" back to the center of the track, and  
+  2) that repeatedly veered toward those key locations (bridge, dirt pull-off) and "jerked" back to the center. This helped train the model to avoid driving off of and into these key locations. However, the car tended to drive up onto and along the curb. 
+  
+Finally, data was collected driving along the second track, one time around, in both directions. This corrected the curb-driving behavior.
+
+Data preprocessing normalizing the images using the Lamdba() function, and cropping the image 50 rows from the top and 20 rows from the bottom as suggested in lecture. Additional preprocessing methods were tested (converting to gray-scale and Canny edge detection) however this methods did not improve autonomous driving. 
+
 
 
 
