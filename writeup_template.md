@@ -58,7 +58,7 @@ The architecture used was adapted from a former Udacity student's Tensorflow [Tr
 |            |Dopout         |keep_prob = 0.6            |
 |Layer4:    |Fully Connect  |
 
-
+For parameter tuning the Adam optimizer was used to automatically adjust the learning rate. Epoches were adjusted such that the Validation to Testing Loss ration was low. This settled at about 5. Epochs greater that this lead to increading validation loss (see Model Fitting below).
 
 #### 2. Data Collection, Preprocessing, and Training Strategy
 
@@ -69,7 +69,7 @@ The original data used for training and validation included two passes around th
   
 Finally, data was collected driving along the second track, one time around, in both directions. This corrected the curb-driving behavior.
 
-Data preprocessing normalizing the images using the Lamdba() function, and cropping the image 50 rows from the top and 20 rows from the bottom as suggested in lecture. Additional preprocessing methods were tested (converting to gray-scale and Canny edge detection) however this methods did not improve autonomous driving. 
+For data preprocessing normalization was used via the Lamdba() function using the equation (img/255 - 0.5) as suggested in lecture. Images were cropped by 50 rows from the top and 20 rows from the bottom, also suggested in lecture. Additional preprocessing methods were tested (converting to gray-scale and Canny edge detection) however this methods did not improve autonomous driving. 
 
 
 
