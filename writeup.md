@@ -70,7 +70,7 @@ This helped train the model to avoid driving off of and into these key locations
 ##### Fig 1. Car Veering Toward Curb
 ![jpg](images/curb.jpg)
 
-##### Fig 1. Car Approaching Bridge
+##### Fig 2. Car Approaching Bridge
 ![jpg](images/bridge.jpg)
 
 
