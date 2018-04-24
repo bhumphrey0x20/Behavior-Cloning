@@ -11,11 +11,6 @@ The goals
 * Test that the model successfully drives around track one without leaving the road
 * Summarize the results with a written report
 
-
-
-## Rubric Points
-### Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.  
-
 ---
 ### Files Submitted & Code Quality
 
@@ -25,7 +20,7 @@ My project includes the following files:
 * model.py containing the script to create and train the model
 * drive.py for driving the car in autonomous mode
 * model.h5 containing a trained convolution neural network 
-* writeup_report.md or writeup_report.pdf summarizing the results
+* writeup_report.md summarizing the results
 
 #### 2. Submission includes functional code
 Using the Udacity provided simulator and my drive.py file, the car can be driven autonomously around the track by executing 
@@ -55,12 +50,11 @@ The architecture used was adapted from a former Udacity student's Tensorflow [Tr
 |           |Max_Pool       |kernel = 2x2, strides = 3 |
 |Layer3:  |Conv           |kernel = 5x5, strides=2   |
 |Flatten:    |Merge of Layer 3 and Layer 2 MaxPool |                    |    
-|            |Dopout         |keep_prob = 0.6            |
 |Layer4:    |Fully Connect  |
 
-Other architectures were experimented with, including a version of the Nvidia architecture discussed in lecture, however the initial Training and Validation losses were much higher ( >= 3.0) so the architecture above was kept.
+For parameter tuning the Adam optimizer was used to automatically adjust the learning rate. Epoches were adjusted such that the Validation Loss was near it's lowest value, at 5 epochs (see Model Fitting below). 
 
-For parameter tuning the Adam optimizer was used to automatically adjust the learning rate. Epoches were adjusted such that the Validation to Testing Loss ration was low. This settled at about 5. Epochs greater that this lead to increading validation loss (see Model Fitting below).
+Softmax activation functions were tested instead of Relu's, usng various epochs (5,10,15) and testing with and without dropouts, this generally resulting in underfitting and poor autonomous driving. 
 
 #### 2. Data Collection, Preprocessing, and Training Strategy
 
@@ -76,25 +70,33 @@ For data preprocessing normalization was used via the Lamdba() function using th
 
 #### 2. Model Fitting
 
-At Epochs = 5, the Traning Loss = 
-## update number
-and Validtion Loss = 
-## update number
-Dropouts were added before the linear layer and after the second convolutional layer (layer 2), however this did not improve the the validation loss in relation to the training loss (see chart below). 
+At about 5 epochs the training loss and validation loss were relatively closs, with a training to validation loss ratio of 0.448 (where 1.0 would be equal, and a ratio > 1.0 would indicate underfitting the model). This keep the car on the track. The model was trained using dropouts after the second layer, after the third layer (immediately before the linear layer), and after both the second and third layers using keep probablities of 0.8 and 0.5, Epochs with the various dropout combinations were tested at 5,7,10,15. These did not appreciably improve overfitting, and autonomous driving was worse (the car always drove off of the track). Therefore dropouts were not used in the final model. 
 
-### INsert Chart
+#### 3. Model parameter tuning
 
-
-
-Additionally, combat overfitting additional data was used, such as training on the second track. 
+The model used an adam optimizer, so the learning rate was not tuned manually (model.py line 25).
 
 
 
 
 
+#### 4. Appropriate training data
 
+Training data was chosen to keep the vehicle driving on the road. I used a combination of center lane driving, recovering from the left and right sides of the road ... 
 
+For details about how I created the training data, see the next section. 
 
+### Model Architecture and Training Strategy
+
+#### 1. Solution Design Approach
+
+The overall strategy for deriving a model architecture was to ...
+
+My first step was to use a convolution neural network model similar to the ... I thought this model might be appropriate because ...
+
+In order to gauge how well the model was working, I split my image and steering angle data into a training and validation set. I found that my first model had a low mean squared error on the training set but a high mean squared error on the validation set. This implied that the model was overfitting. 
+
+To combat the overfitting, I modified the model so that ...
 
 Then I ... 
 
