@@ -66,8 +66,18 @@ The original data used for training and validation included two passes around th
   2) data that repeatedly veered toward those key locations (bridge, dirt pull-off) and "jerked" back to the center of the track. 
   
 This helped train the model to avoid driving off of and into these key locations. However, the car tended to drive up onto and along the curb. 
-  
+
+##### Fig 1. Car Veering Toward Curb
+![jpg](center_2018_04_20_21_04_11_059.jpg)
+
+##### Fig 1. Car Approaching Bridge
+![jpg](left_2018_04_20_23_41_49_346.jpg)
+
+
 Finally, data was collected driving along the second track, one time around, in both directions. This seemed to corrected the curb-driving behavior. 
+
+##### Fig 3. Image of Second Track
+![jpg](center_2018_04_21_15_09_23_086.jpg)
 
 For data preprocessing normalization was used via the Lamdba() function using the equation (img/255 - 0.5), as suggested in lecture. Images were cropped by 50 rows from the top and 20 rows from the bottom, also suggested in lecture. Additional preprocessing methods were tested (converting to gray-scale and Canny edge detection) however this methods did not improve the model. 
 
@@ -78,12 +88,3 @@ The data was shuffled and 20% of the data was split apart and used for validatio
 Loss was determined using Mean Squared Error. At about 5 epochs the training loss and validation loss were relatively close, with a training to validation loss ratio of 0.448 (where 1.0 would be equal, and a ratio > 1.0 would indicate underfitting the model). This keep the car on the track. 
 
 The model was trained using dropouts after the second layer, after the third layer (immediately before the linear layer), and after both the second and third layers using keep probablities of 0.8 and 0.5. Epochs with the various dropout combinations were tested at 5,7,10,15. These did not appreciably improve overfitting, and autonomous driving was worse (the car always drove off of the track). Therefore dropouts were not used in the final model. 
-
-
-
-
-
-
-![alt text][image6]
-![alt text][image7]
-
