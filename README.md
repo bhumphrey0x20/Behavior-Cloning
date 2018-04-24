@@ -62,4 +62,3 @@ The data was normalization according to the equation ( img/255 - 0.5 ). Images w
 
 The model was trained for 5 epochs, loss was calculated using MSE.  
 
-Driving the simulator in autonomous mode was successful around the track (see video.mp4). 
