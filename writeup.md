@@ -68,16 +68,16 @@ The original data used for training and validation included two passes around th
 This helped train the model to avoid driving off of and into these key locations. However, the car tended to drive up onto and along the curb. 
 
 ##### Fig 1. Car Veering Toward Curb
-![jpg](center_2018_04_20_21_04_11_059.jpg)
+![jpg](images/curb.jpg)
 
 ##### Fig 1. Car Approaching Bridge
-![jpg](left_2018_04_20_23_41_49_346.jpg)
+![jpg](images/bridge.jpg)
 
 
 Finally, data was collected driving along the second track, one time around, in both directions. This seemed to corrected the curb-driving behavior. 
 
 ##### Fig 3. Image of Second Track
-![jpg](center_2018_04_21_15_09_23_086.jpg)
+![jpg](images/track2.jpg)
 
 For data preprocessing normalization was used via the Lamdba() function using the equation (img/255 - 0.5), as suggested in lecture. Images were cropped by 50 rows from the top and 20 rows from the bottom, also suggested in lecture. Additional preprocessing methods were tested (converting to gray-scale and Canny edge detection) however this methods did not improve the model. 
 
