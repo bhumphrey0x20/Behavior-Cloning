@@ -14,9 +14,9 @@ The goals
 ---
 ### Files Submitted & Code Quality
 
-#### 1. Submission includes all required files and can be used to run the simulator in autonomous mode
+#### 1. Included Files for Submission
 
-My project includes the following files:
+This project includes the following files:
 * model.py containing the script to create and train the model
 * drive.py for driving the car in autonomous mode
 * model.h5 containing a trained convolution neural network 
@@ -52,30 +52,32 @@ The architecture used was adapted from a former Udacity student's Tensorflow [Tr
 |Flatten:    |Merge of Layer 3 and Layer 2 MaxPool |                    |    
 |Layer4:    |Fully Connect  |
 
+An adaptation of the Nvidia architecture discussed in class was tested however the training and validation losses were much higher that the architecture described above, therefore it was not used. 
+
 For parameter tuning the Adam optimizer was used to automatically adjust the learning rate. Epoches were adjusted such that the Validation Loss was near it's lowest value, at 5 epochs (see Model Fitting below). 
 
 Softmax activation functions were tested instead of Relu's, usng various epochs (5,10,15) and testing with and without dropouts, this generally resulting in underfitting and poor autonomous driving. 
 
 #### 2. Data Collection, Preprocessing, and Training Strategy
 
-The original data used for training and validation included two passes around the track (counter-clockwise) of straight line driving and one pass of straight line driving around the track in the opposite directon (clockwise). This resulted in autonomous driving that tended veer off the track on longer, tighter curves and at key locations (such as bridges and the "dirt pull-off"). To combat this, additional data was collected, 
+The original data used for training and validation included two passes around the track (counter-clockwise) of straight line driving and one pass of straight line driving around the track in the opposite directon (clockwise). This resulted in autonomous driving that tended veer off the track on longer, tighter curves and at key locations (such as bridges and the "dirt pull-off"). To combat this, additional data was collected which included
 
-  1) that continously veered toward the curbs and "jerked" back to the center of the track, and  
-  2) that repeatedly veered toward those key locations (bridge, dirt pull-off) and "jerked" back to the center. This helped train the model to avoid driving off of and into these key locations. However, the car tended to drive up onto and along the curb. 
+  1) data that continously veered toward the curbs around the track and "jerked" back to the center of the track; and  
+  2) data that repeatedly veered toward those key locations (bridge, dirt pull-off) and "jerked" back to the center of the track. 
   
-Finally, data was collected driving along the second track, one time around, in both directions. This corrected the curb-driving behavior. 
+This helped train the model to avoid driving off of and into these key locations. However, the car tended to drive up onto and along the curb. 
+  
+Finally, data was collected driving along the second track, one time around, in both directions. This seemed to corrected the curb-driving behavior. 
 
-For data preprocessing normalization was used via the Lamdba() function using the equation (img/255 - 0.5) as suggested in lecture. Images were cropped by 50 rows from the top and 20 rows from the bottom, also suggested in lecture. Additional preprocessing methods were tested (converting to gray-scale and Canny edge detection) however this methods did not improve autonomous driving. 
+For data preprocessing normalization was used via the Lamdba() function using the equation (img/255 - 0.5), as suggested in lecture. Images were cropped by 50 rows from the top and 20 rows from the bottom, also suggested in lecture. Additional preprocessing methods were tested (converting to gray-scale and Canny edge detection) however this methods did not improve the model. 
 
 The data was shuffled and 20% of the data was split apart and used for validation, while the remaining 80% was used for training.
 
 #### 2. Model Fitting
 
-At about 5 epochs the training loss and validation loss were relatively closs, with a training to validation loss ratio of 0.448 (where 1.0 would be equal, and a ratio > 1.0 would indicate underfitting the model). This keep the car on the track. The model was trained using dropouts after the second layer, after the third layer (immediately before the linear layer), and after both the second and third layers using keep probablities of 0.8 and 0.5, Epochs with the various dropout combinations were tested at 5,7,10,15. These did not appreciably improve overfitting, and autonomous driving was worse (the car always drove off of the track). Therefore dropouts were not used in the final model. 
+Loss was determined using Mean Squared Error. At about 5 epochs the training loss and validation loss were relatively close, with a training to validation loss ratio of 0.448 (where 1.0 would be equal, and a ratio > 1.0 would indicate underfitting the model). This keep the car on the track. 
 
-#### 3. Model parameter tuning
-
-The model used an adam optimizer, so the learning rate was not tuned manually (model.py line 25).
+The model was trained using dropouts after the second layer, after the third layer (immediately before the linear layer), and after both the second and third layers using keep probablities of 0.8 and 0.5. Epochs with the various dropout combinations were tested at 5,7,10,15. These did not appreciably improve overfitting, and autonomous driving was worse (the car always drove off of the track). Therefore dropouts were not used in the final model. 
 
 
 
