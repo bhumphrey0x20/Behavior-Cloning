@@ -36,7 +36,7 @@ The model.py file contains the code for training and saving the convolution neur
 
 #### 1. Model Architecture 
 
-The architecture used was adapted from a former Udacity student's Tensorflow [Traffic Sign Classifiers project](https://github.com/jeremy-shannon/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb)- itself an adaptation of Sermanet/LeCunn classifier. It uses three convolutional layer and a singer linear layer. After the first two convolutional layers, the outputs are passed through a Relu and a MaxPooling node. The output of the third convolution is flattened and concatenated with the flattened output of the second max pool. This is then passed through a single linear layer. 
+The architecture used was adapted from a former Udacity student's Tensorflow [Traffic Sign Classifiers project](https://github.com/jeremy-shannon/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb)- described as an adaptation of a Sermanet/LeCunn classifier. It uses three convolutional layer and a singer linear layer. After the first two convolutional layers, the outputs are passed through a Relu and a MaxPooling node. The output of the third convolution is flattened and concatenated with the flattened output of the second max pool. This is then passed through a single linear layer. 
 
 
 
@@ -52,7 +52,7 @@ The architecture used was adapted from a former Udacity student's Tensorflow [Tr
 |Flatten:    |Merge of Layer 3 and Layer 2 MaxPool |                    |    
 |Layer4:    |Fully Connect  |
 
-An adaptation of the Nvidia architecture discussed in class was tested however the training and validation losses were much higher that the architecture described above, therefore it was not used. 
+An adaptation of the Nvidia architecture discussed in class was tested however, the training and validation losses were much higher that the architecture described above, therefore it was not used. 
 
 For parameter tuning the Adam optimizer was used to automatically adjust the learning rate. Epoches were adjusted such that the Validation Loss was near it's lowest value, at 5 epochs (see Model Fitting below). 
 
