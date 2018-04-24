@@ -4,7 +4,7 @@
 ## Writeup
 ---
 
-The goals 
+### Goals 
 * Use the simulator to collect driving behavior data
 * Build, a convolution neural network in Keras that predicts steering angles from driving images
 * Train and validate the model with a training and validation set
