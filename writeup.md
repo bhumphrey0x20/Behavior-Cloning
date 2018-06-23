@@ -104,6 +104,11 @@ Ideas for data augmentation are described ![here](https://chatbotslife.com/using
 
 Additional, augmentation was performed in the function `generate_data()` (lines 133-158) and included converting the images to YUV color space, cropping the images by 50 rows from the top and 20 rows from the bottom; and resizing the image to 64x64.
 
+##### Fig 3. Image Augmentation: Original, Flipped, Brightened/Darkened, Shifted Images
+<img src="https://raw.githubusercontent.com/bhumphrey0x20/Behavior-Cloning/master/images/augmentation.png" height="344" width="1395" />
+
+
+
 #### 5. Generator Functions
 
 To add training and testing data to the model and reduce memory usage two generator function were used. The first, `generate_data()` (line 133-158), randomly chose an angle and image from the angle and camera lists. Camera image (left, right, or center) was determined by the camera image flag (discussed above). The image was converted to YUV color space, cropped, and resized to 64x64. 
