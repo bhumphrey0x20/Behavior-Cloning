@@ -65,7 +65,7 @@ The original data used for training and validation included two passes around th
 
 Ultimately, ![Udacity driving data](https://d17h27t6h515a5.cloudfront.net/topher/2016/December/584f6edd_data/data.zip) was used to successfully train the model. The data was preprocessed to more equally distribute the driving angles, data augmentation was added,  and generators were used to successfully train the model.
 
-##### Data Preprocessing
+#### 3. Data Preprocessing
 
 A histogram of the steering angles shows a large number of zeros in the data biasing it toward straight line driving. Ideas from ![here](https://medium.com/@mohankarthik/cloning-a-car-to-mimic-human-driving-5c2f7e8d8aff) and ![here](https://medium.com/@fromtheast/you-dont-need-lots-of-data-udacity-behavioral-cloning-6d2d87316c52) were employed to redistribute the zero-valued angles. 
 
@@ -89,13 +89,13 @@ Flags appended to the image path list were used to indicate which camera angle t
 
 Preprocessed data was shuffled and 20% of the data was split apart and used for validation testomg, while the remaining 80% was used for training (line 302).
 
-#### Data Augmentation
+#### 4. Data Augmentation
 
 Ideas for data augmentation are described ![here](https://chatbotslife.com/using-augmentation-to-mimic-human-driving-496b569760a9). These include fliping image, brightening/darkening (here on out called brightening) image, shifting or translating the image left or right or a combination of flipping and brightening. These processes were performed inside the generator function `generate_batch()` (lines 162-226). Flipping used `numpy.fliplr()` and changed the sign of the angle. `brighten_image()` (lines 62-73) converted image to HSV and multiplied the v-channel by a random number and converting image back to BGR color space. `image_shift()` translated the image randomly left or right and multiplied the angle by a random `shift_factor`.
 
 Additional, augmentation was performed in the function `generate_data()` (lines 133-158) and included converting image to YUV space cropped image by 50 rows from the top and 20 rows from the bottom; and resizing the image to 64x64.
 
-#### Generator Functions
+#### 5. Generator Functions
 
 To add training and testing data to the model and reduce memory usage two generator function were used. The first, `generate_data()` (line 133-158), randomly chooses an angle and image from the angle and camera lists. Camera image (left, right, or center) was determined by the camera image flag (discussed above). The image was converted to YUV color space, cropped, and resized to 64x64. 
 
@@ -105,7 +105,10 @@ A `generate_data()` and `generate_batch()` function were created for both traini
 
 
 
-#### 2. Model Fitting
+#### Model Fitting
 
 For training and testing eight epochs were used with a batch size of 125, and a samples per epoch of 20,000. These were determined by experimentally. Loss was determined using Mean Squared Error. 
 
+#### drive.py File
+
+For autonomous driving, the drive.py file was modified to convert the imput image from to YUV color space, crop the image, and resize the image to 64x64 (lines 65-68).
