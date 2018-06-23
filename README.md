@@ -1,4 +1,5 @@
 ## Behaviorial Cloning, Project 3
+### Project Resubmission
 
 [![Udacity - Self-Driving Car NanoDegree](https://s3.amazonaws.com/udacity-sdc/github/shield-carnd.svg)](http://www.udacity.com/drive)
 
@@ -21,44 +22,44 @@
 
 The architecture used was adapted from a former Udacity student's Tensorflow architecture used in the [Traffic Sign Classifiers project](https://github.com/jeremy-shannon/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb)
 
-It uses three convolutional layer, concatenates the output of layer 2 and layer 3, and feeds them into a singer linear layer. Relus and Max Pooling are used after the first two convolutionals. 
+It uses normalization of th input, three convolutional layers, concatenates the output of layer 2 and layer 3, and feeds them into a fully connected layer. Max Pooling is used after the first two convolutionals, and a dropout is used before the fully connected layer
 
+
+#### Table 1. CNN Architeture
 
 | Layer No  | Functions     |Dimensions                                   |
 |-----------|---------------|---------------------------------------------|
-|Layer1:    |Conv           |kernel = 3x3, strides = 2 |
-|           |Relu      |                                             |
+|Layer1:    |Normalization  |(img/255 - 0.5)  |
+|           |Conv           |kernel = 3x3, strides = 2 |
 |           |Max_Pool       |kernel = 3x3, strides = 2                  |
-|Layer2:    |Conv           |kernel = 5x5, strides = 1 |
-|           |Relu        |                                             |  
+|Layer2:    |Conv           |kernel = 1x1, strides = 1 |
+|           |Conv           |kernel = 5x5, strides = 1 |
 |           |Max_Pool       |kernel = 2x2, strides = 3 |
-|Layer3:  |Conv           |kernel = 5x5, strides=2   |
-|Flatten:    |Merge of Layer 3 and Layer 2 MaxPool |                    |    
-|Layer4:    |Fully Connect  |                       |
+|Layer3:    |Conv           |kernel = 1x1, strides = 1 |
+|           |Conv           |kernel = 5x5, strides=2   |
+|Flatten:   |Merge of Layer 3 output and Layer 2 MaxPool output |                    |    
+|           |Dropout  | keep prob = 0.8
+|Layer4:    |Fully Connect  |
 
 #### Data Collection 
 
-The original data used for training and validation included two passes around the track (counter-clockwise) of straight line driving and one pass of straight line driving around the track in the opposite directon (clockwise). This resulted in autonomous driving that tended veer off the track on longer, tighter curves and at key locations (such as bridges and the "dirt pull-off"). To combat this, additional data was collected which included
-
-  1) data that continously veered toward the curbs around the track and "jerked" back to the center of the track; and  
-  2) data that repeatedly veered toward those key locations (bridge, dirt pull-off) and "jerked" back to the center of the track. 
-  
-This helped train the model to avoid driving off of and into these key locations. However, the car tended to drive up onto and along the curb. 
-
-##### Fig 1. Car Veering Toward Curb
-![jpg](images/curb.jpg)
-
-##### Fig 2. Car Approaching Bridge
-![jpg](images/bridge.jpg)
+![Udacity driving data](https://d17h27t6h515a5.cloudfront.net/topher/2016/December/584f6edd_data/data.zip) was used to successfully train the model. The data was preprocessed to more equally distribute the driving angles and reduce the number of zero-valued angles, data augmentation was added, and generators were used to successfully train the model. Augmentation included a combination of flipping, image brightening, and shifting. Additionally the images were converted to YUV color space, cropped, and resized to 64x64.
 
 
-Finally, data was collected driving along the second track, one time around, in both directions. This seemed to corrected the curb-driving behavior. 
+##### Fig 1. Histogram of Steering Angles Before Preprocessing
+<img src="https://raw.githubusercontent.com/bhumphrey0x20/Behavior-Cloning/master/images/hist_data.png" height="240" width="320" />
+##### Fig 2. Histogram of Steering Angles After Preprocessing
+<img src="https://raw.githubusercontent.com/bhumphrey0x20/Behavior-Cloning/master/images/hist_preproc_data.png" height="240" width="320" />
 
-##### Fig 3. Image of Second Track
-![jpg](images/track2.jpg)
+##### Fig 3. Image Augmentation: Original, Flipped, Brightened/Darkened, Shifted Images
+<img src="https://raw.githubusercontent.com/bhumphrey0x20/Behavior-Cloning/master/images/augmentation.png" height="344" width="1395" />
+
 
 The data was normalization according to the equation ( img/255 - 0.5 ). Images were cropped by 50 rows from the top and 20 rows from the bottom. Only center camera angles were used. The data was shuffled and 20% of the data was split apart and used for validation, while the remaining 80% was used for training.
 
 
-The model was trained for 5 epochs, loss was calculated using MSE.  
+The model was trained for 8 epochs, using a batch size = 125. Loss was calculated using MSE.  
 
+### Video Implementation 
+
+<a href="https://youtu.be/4y52Gx04My0" target="_blank"><img src="https://i9.ytimg.com/vi/4y52Gx04My0/1.jpg" alt="Behavioral Cloning Video" width="240" height="180" border="10" /></a>
