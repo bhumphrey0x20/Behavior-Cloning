@@ -67,7 +67,7 @@ Ultimately, ![Udacity driving data](https://d17h27t6h515a5.cloudfront.net/topher
 
 #### 3. Data Preprocessing
 
-A histogram of the steering angles shows a large number of zeros in the data biasing it toward straight line driving. Ideas from ![here](https://medium.com/@mohankarthik/cloning-a-car-to-mimic-human-driving-5c2f7e8d8aff) and ![here](https://medium.com/@fromtheast/you-dont-need-lots-of-data-udacity-behavioral-cloning-6d2d87316c52) were employed to redistribute the zero-valued angles. 
+A histogram of the steering angles shows a large number of zero values. Figure 1 shows the steeing angle distribution from the Udacity data set. The number of zero-valued steering angles was 4373, biasing it toward straight line driving. Ideas from ![here](https://medium.com/@mohankarthik/cloning-a-car-to-mimic-human-driving-5c2f7e8d8aff) and ![here](https://medium.com/@fromtheast/you-dont-need-lots-of-data-udacity-behavioral-cloning-6d2d87316c52) were employed to reduce the number of zero-valued angles. 
 
 Image path and and steering angles were read from the csv file (lines 239-262) and sorted/classified using function preprocess_data() (lines 78-125). The preprocessing steps shuffled, and appended angle values and image pathes to lists based on the value of the angle. Angles between -015 and 0.15 were classified as center angles and images; angles < -0.15 were classified as left angles and images; and angles > 0.15 were classified as right angles and images. Next, the center angles were split using `train_test_split()` and 98% of the center angles were redistributed to the left and right lists. 
 
@@ -76,15 +76,10 @@ For redistribution, angles < 0 were classified as left angles and a random numbe
 Flags appended to the image path list were used to indicate which camera angle to use, from the Udacity image set, during training of the model : center, left, or right. For paths appended to the left angle list (angle < 0), a "2" was appended to indicate right camera. Conversely, a "2" was appended to right image paths, to indicate the use of left cameras. This was also a form of data augmentation.
 
 
-##### Fig 1. Car Veering Toward Curb
-![jpg](images/curb.jpg)
-
-##### Fig 2. Car Approaching Bridge
-![jpg](images/bridge.jpg)
-
-
-##### Fig 3. Image of Second Track
-![jpg](images/track2.jpg)
+##### Fig 1. Histogram of Steering Angles Before Preprocessing
+<img src="https://raw.githubusercontent.com/bhumphrey0x20/Behavior-Cloning/master/images/hist_data.png" height="240" width="320" />
+##### Fig 1. Histogram of Steering Angles After Preprocessing
+<img src="https://raw.githubusercontent.com/bhumphrey0x20/Behavior-Cloning/master/images/hist_prepoc_data.png" height="240" width="320" />
 
 
 Preprocessed data was shuffled and 20% of the data was split apart and used for validation testomg, while the remaining 80% was used for training (line 302).
