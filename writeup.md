@@ -78,8 +78,8 @@ Flags appended to the image path list were used to indicate which camera angle t
 
 ##### Fig 1. Histogram of Steering Angles Before Preprocessing
 <img src="https://raw.githubusercontent.com/bhumphrey0x20/Behavior-Cloning/master/images/hist_data.png" height="240" width="320" />
-##### Fig 1. Histogram of Steering Angles After Preprocessing
-<img src="https://raw.githubusercontent.com/bhumphrey0x20/Behavior-Cloning/master/images/hist_prepoc_data.png" height="240" width="320" />
+##### Fig 2. Histogram of Steering Angles After Preprocessing
+<img src="https://raw.githubusercontent.com/bhumphrey0x20/Behavior-Cloning/master/images/hist_preproc_data.png" height="240" width="320" />
 
 
 Preprocessed data was shuffled and 20% of the data was split apart and used for validation testomg, while the remaining 80% was used for training (line 302).
