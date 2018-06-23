@@ -123,4 +123,4 @@ For autonomous driving, the drive.py file was modified to convert the imput imag
 
 ### Video Implementation 
 
-<a href="https://youtu.be/4y52Gx04My0" target="_blank"><img src="https://i9.ytimg.com/vi/4y52Gx04My0/1.jpg" alt="Advanced Lane Finding Video" width="240" height="180" border="10" /></a>
+<a href="https://youtu.be/4y52Gx04My0" target="_blank"><img src="https://i9.ytimg.com/vi/4y52Gx04My0/1.jpg" alt="Behavioral Cloning Video" width="240" height="180" border="10" /></a>
