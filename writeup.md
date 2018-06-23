@@ -36,7 +36,7 @@ The python script model.py is updated code used for training and saving the conv
 
 #### 1. Model Architecture 
 
-The architecture used was adapted from a former Udacity student's Tensorflow [Traffic Sign Classifiers project](https://github.com/jeremy-shannon/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb)- described as an adaptation of a Sermanet/LeCunn classifier. The model includes normalization via the `Lamdba()` function using the equation (img/255 - 0.5), three convolutional layers and a singer linear layer (see lines 351 - 376 in model.py). Some adjustments were made for the resubmission. The current architeture includes, a Normalizing layer, a 3x3 convolutional layer followed by a maxpooling. Next, a 1x1 convolutional is followed by a 5x5 convolution and a maxpooling. Then, another 1x1 convolution is followed by another 5x5 convolution. The output of layer 2 and layer 3 are flattened and concatenated and passed through a dropout with a keep probablity of 0.8. Finally, a single fully connected layer is performed. 
+The architecture used was adapted from a former Udacity student's Tensorflow [Traffic Sign Classifiers project](https://github.com/jeremy-shannon/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb)- described as an adaptation of a Sermanet/LeCunn classifier. The model includes normalization via the `Lamdba()` function using the equation (img/255 - 0.5), three convolutional layers and a singer linear layer (see lines 347-371 in model.py). Some adjustments were made for the resubmission. The current architeture includes, a Normalizing layer, a 3x3 convolutional layer followed by a maxpooling. Next, a 1x1 convolutional is followed by a 5x5 convolution and a maxpooling. Then, another 1x1 convolution is followed by another 5x5 convolution. The output of layer 2 and layer 3 are flattened and concatenated and passed through a dropout with a keep probablity of 0.8. Finally, a single fully connected layer is performed. 
 
 
 
@@ -69,7 +69,7 @@ Ultimately, ![Udacity driving data](https://d17h27t6h515a5.cloudfront.net/topher
 
 A histogram of the steering angles shows a large number of zeros in the data biasing it toward straight line driving. Ideas from ![here](https://medium.com/@mohankarthik/cloning-a-car-to-mimic-human-driving-5c2f7e8d8aff) and ![here](https://medium.com/@fromtheast/you-dont-need-lots-of-data-udacity-behavioral-cloning-6d2d87316c52) were employed to redistribute the zero-valued angles. 
 
-Image path and and steering angles were read from the csv file (lines 243-280) and sorted/classified using function preprocess_data() (lines 70-117). The preprocessing steps shuffled, and appended angle values and image pathes to lists based on the value of the angle. Angles between -015 and 0.15 were classified as center angles and images; angles < -0.15 were classified as left angles and images; and angles > 0.15 were classified as right angles and images. Next, the center angles were split using `train_test_split()` and 98% of the center angles were redistributed to the left and right lists. 
+Image path and and steering angles were read from the csv file (lines 239-262) and sorted/classified using function preprocess_data() (lines 78-125). The preprocessing steps shuffled, and appended angle values and image pathes to lists based on the value of the angle. Angles between -015 and 0.15 were classified as center angles and images; angles < -0.15 were classified as left angles and images; and angles > 0.15 were classified as right angles and images. Next, the center angles were split using `train_test_split()` and 98% of the center angles were redistributed to the left and right lists. 
 
 For redistribution, angles < 0 were classified as left angles and a random number between 0 and 0.25 was subtracted to the angle value and appended to the angle list. The path list was "flagged" and appended to the left image path list. The same was done for angles > 0. A random number was added to the right angle value and appended to the right list. The image path was flagged accordingly. Angles = 0 were discarded. 
 
@@ -86,7 +86,17 @@ Flags appended to the image path list were used to indicate which camera angle t
 ##### Fig 3. Image of Second Track
 ![jpg](images/track2.jpg)
 
-For data preprocessing Images were cropped by 50 rows from the top and 20 rows from the bottom, also suggested in lecture. Additional preprocessing methods were tested (converting to gray-scale and Canny edge detection) however this methods did not improve the model. 
+
+#### Data Augmentation
+
+Ideas for data augmentation are described ![here](https://chatbotslife.com/using-augmentation-to-mimic-human-driving-496b569760a9). These include fliping image, brightening/darkening (here on out called brightening) image, shifting or translating the image left or right or a combination of flipping and brightening. These processes were performed inside the generator function `generate_batch()` (lines 162-226). Flipping used `numpy.fliplr()` and changed the sign of the angle. `brighten_image()` (lines 62-73) converted image to HSV and multiplied the v-channel by a random number and converting image back to BGR color space. `image_shift()` translated the image randomly left or right and multiplied the angle by a random `shift_factor`.
+
+Additional, augmentation was performed in the function `generate_data()` (lines 133-158) and included converting image to YUV space cropped image by 50 rows from the top and 20 rows from the bottom; and resizing the image to 64x64.
+
+#### Generator Function
+
+To add test and training data to the model and reduce memory usage two generator function were used. The first, `generate_data()` 
+
 
 The data was shuffled and 20% of the data was split apart and used for validation, while the remaining 80% was used for training.
 
