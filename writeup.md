@@ -61,8 +61,9 @@ The output of layer 2 and layer 3 are flattened and concatenated and passed thro
 |Layer2:    |Conv           |kernel = 1x1, strides = 1 |
 |           |Conv           |kernel = 5x5, strides = 1 |
 |           |Max_Pool       |kernel = 2x2, strides = 3 |
-|Layer3:  |Conv           |kernel = 5x5, strides=2   |
-|Flatten:    |Merge of Layer 3 and Layer 2 MaxPool |                    |    
+|Layer3:    |Conv           |kernel = 1x1, strides = 1 |
+|           |Conv           |kernel = 5x5, strides=2   |
+|Flatten:   |Merge of Layer 3 output and Layer 2 MaxPool output |                    |    
 |           |Dropout  | keep prob = 0.8
 |Layer4:    |Fully Connect  |
 
