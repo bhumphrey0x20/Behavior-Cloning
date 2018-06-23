@@ -107,6 +107,5 @@ A `generate_data()` and `generate_batch()` function were created for both traini
 
 #### 2. Model Fitting
 
-Loss was determined using Mean Squared Error. At about 5 epochs the training loss and validation loss were relatively close, with a training to validation loss ratio of 0.448 (where 1.0 would be equal, and a ratio > 1.0 would indicate underfitting the model). This keep the car on the track. 
+For training and testing eight epochs were used with a batch size of 125, and a samples per epoch of 20,000. These were determined by experimentally. Loss was determined using Mean Squared Error. 
 
-The model was trained using dropouts after the second layer, after the third layer (immediately before the linear layer), and after both the second and third layers using keep probablities of 0.8 and 0.5. Epochs with the various dropout combinations were tested at 5,7,10,15. These did not appreciably improve overfitting, and autonomous driving was worse (the car always drove off of the track). Therefore dropouts were not used in the final model. 
