@@ -71,7 +71,7 @@ A histogram of the steering angles shows a large number of zeros in the data bia
 
 Image path and and steering angles were read from the csv file (lines 239-262) and sorted/classified using function preprocess_data() (lines 78-125). The preprocessing steps shuffled, and appended angle values and image pathes to lists based on the value of the angle. Angles between -015 and 0.15 were classified as center angles and images; angles < -0.15 were classified as left angles and images; and angles > 0.15 were classified as right angles and images. Next, the center angles were split using `train_test_split()` and 98% of the center angles were redistributed to the left and right lists. 
 
-For redistribution, angles < 0 were classified as left angles and a random number between 0 and 0.25 was subtracted to the angle value and appended to the angle list. The path list was "flagged" and appended to the left image path list. The same was done for angles > 0. A random number was added to the right angle value and appended to the right list. The image path was flagged accordingly. Angles = 0 were discarded. 
+For redistribution, angles < 0 were classified as left angles and a random number between 0 and 0.25 was subtracted to the angle value and appended to the angle list. The path list was "flagged" and appended to the left image path list. The same was done for angles > 0. A random number was added to the right angle value and appended to the right list. The image path was flagged accordingly. Angles = 0 were discarded. Then the original center list was appened to the new left and right lists. 
 
 Flags appended to the image path list were used to indicate which camera angle to use, from the Udacity image set, during training of the model : center, left, or right. For paths appended to the left angle list (angle < 0), a "2" was appended to indicate right camera. Conversely, a "2" was appended to right image paths, to indicate the use of left cameras. This was also a form of data augmentation.
 
@@ -87,18 +87,23 @@ Flags appended to the image path list were used to indicate which camera angle t
 ![jpg](images/track2.jpg)
 
 
+Preprocessed data was shuffled and 20% of the data was split apart and used for validation testomg, while the remaining 80% was used for training (line 302).
+
 #### Data Augmentation
 
 Ideas for data augmentation are described ![here](https://chatbotslife.com/using-augmentation-to-mimic-human-driving-496b569760a9). These include fliping image, brightening/darkening (here on out called brightening) image, shifting or translating the image left or right or a combination of flipping and brightening. These processes were performed inside the generator function `generate_batch()` (lines 162-226). Flipping used `numpy.fliplr()` and changed the sign of the angle. `brighten_image()` (lines 62-73) converted image to HSV and multiplied the v-channel by a random number and converting image back to BGR color space. `image_shift()` translated the image randomly left or right and multiplied the angle by a random `shift_factor`.
 
 Additional, augmentation was performed in the function `generate_data()` (lines 133-158) and included converting image to YUV space cropped image by 50 rows from the top and 20 rows from the bottom; and resizing the image to 64x64.
 
-#### Generator Function
+#### Generator Functions
 
-To add test and training data to the model and reduce memory usage two generator function were used. The first, `generate_data()` 
+To add training and testing data to the model and reduce memory usage two generator function were used. The first, `generate_data()` (line 133-158), randomly chooses an angle and image from the angle and camera lists. Camera image (left, right, or center) was determined by the camera image flag (discussed above). The image was converted to YUV color space, cropped, and resized to 64x64. 
+
+The second generator function `generate_batch()` (line 162-266) was used to create batches use for model training. The function take images generated from `generate_data()` and randomly choses a data augmentation step( flipping, brightening, flipping and brightening, or shifting).
+
+A `generate_data()` and `generate_batch()` function were created for both training data and testing data. 
 
 
-The data was shuffled and 20% of the data was split apart and used for validation, while the remaining 80% was used for training.
 
 #### 2. Model Fitting
 
