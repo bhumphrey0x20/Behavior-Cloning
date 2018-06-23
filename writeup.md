@@ -30,23 +30,22 @@ python drive.py model.h5
 
 #### 3. Submission code is usable and readable
 
-The model.py file contains the code for training and saving the convolution neural network. The file shows the pipeline I used for training and validating the model, and it contains comments to explain how the code works.
+The model.py is an updated code  used for training and saving the convolution neural network. The file shows the pipeline I used for training and validating the model, and it contains comments to explain how the code works. Changes made since the original submission include 
 
 ### Model Architecture and Training Strategy
 
 #### 1. Model Architecture 
 
-The architecture used was adapted from a former Udacity student's Tensorflow [Traffic Sign Classifiers project](https://github.com/jeremy-shannon/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb)- described as an adaptation of a Sermanet/LeCunn classifier. It uses three convolutional layer and a singer linear layer. After the first two convolutional layers, the outputs are passed through a Relu and a MaxPooling node. The output of the third convolution is flattened and concatenated with the flattened output of the second max pool. This is then passed through a single linear layer. 
+The architecture used was adapted from a former Udacity student's Tensorflow [Traffic Sign Classifiers project](https://github.com/jeremy-shannon/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb)- described as an adaptation of a Sermanet/LeCunn classifier. It uses three convolutional layer and a singer linear layer. Some adjustments were made for the resubmission. The current architeture includes, a Normalizing layer, a 3x3 convolutional layer followed by a maxpooling. Next, a 1x1 convolutional is followed by a 5x5 convolution and a maxpooling. Then, another 1x1 convolution is followed by another 5x5 convolution. The output of layer 2 and layer 3 are flattened and concatenated and passed through a dropout with a keep probablity of 0.8. Finally, a single fully connected layer is performed. 
 
 
 
 | Layer No  | Functions     |Dimensions                                   |
 |-----------|---------------|---------------------------------------------|
 |Layer1:    |Conv           |kernel = 3x3, strides = 2 |
-|           |Relu      |                                             |
 |           |Max_Pool       |kernel = 3x3, strides = 2                  |
-|Layer2:    |Conv           |kernel = 5x5, strides = 1 |
-|           |Relu        |                                             |  
+|Layer2:    |Conv           |kernel = 1x1, strides = 1 |
+|           |Conv           |kernel = 5x5, strides = 1 |
 |           |Max_Pool       |kernel = 2x2, strides = 3 |
 |Layer3:  |Conv           |kernel = 5x5, strides=2   |
 |Flatten:    |Merge of Layer 3 and Layer 2 MaxPool |                    |    
@@ -56,7 +55,7 @@ An adaptation of the Nvidia architecture discussed in class was tested however, 
 
 For parameter tuning the Adam optimizer was used to automatically adjust the learning rate. Epoches were adjusted such that the Validation Loss was near it's lowest value, at 5 epochs (see Model Fitting below). 
 
-Softmax activation functions were tested instead of Relu's, usng various epochs (5,10,15) and testing with and without dropouts, this generally resulting in underfitting and poor autonomous driving. 
+Softmax activation functions were tested instead of Relu's, usng various epochs (5,10,15) and testing with and without dropouts, this generally resulting in underfitting and poor autonomous driving, therefore they were completely removed. 
 
 #### 2. Data Collection, Preprocessing, and Training Strategy
 
