@@ -20,7 +20,7 @@
 
 #### 1. Model Architecture 
 
-Uses and adaptation of the Nvidia architecture described ![here](https://devblogs.nvidia.com/deep-learning-self-driving-cars/). The dropouts and keep probability values were modeled after ![this architecture](https://github.com/bhumphrey0x20/Behavior-Cloning/edit/master/writeup.md)  
+Uses and adaptation of the Nvidia architecture described ![here](https://devblogs.nvidia.com/deep-learning-self-driving-cars/). The dropouts and keep probability values were modeled after ![this architecture](https://github.com/bhumphrey0x20/Behavior-Cloning/edit/master/writeup.md). For parameter tuning the Adam optimizer was used to automatically adjust the learning rate. Epoches were adjusted such that the Validation Loss was near it's lowest value, at 4 epochs (see Model Fitting below). Relu activation functions were used after the first to convolutional layers. Max pooling was used after the the first three layers.
 
 
 #### Table 1. Nvidia-type CNN Architeture
@@ -48,6 +48,8 @@ Uses and adaptation of the Nvidia architecture described ![here](https://devblog
 |Layer11:    |Fully Connect  |
 
 
+
+
 #### Data Collection 
 
 ![Udacity driving data](https://d17h27t6h515a5.cloudfront.net/topher/2016/December/584f6edd_data/data.zip) was used to successfully train the model. The data was preprocessed to more equally distribute the driving angles and reduce the number of zero-valued angles, data augmentation was added, and generators were used to successfully train the model. Augmentation included a combination of flipping, image brightening, and shifting. Additionally the images were converted to YUV color space, cropped, and resized to 64x64.
@@ -65,7 +67,7 @@ Uses and adaptation of the Nvidia architecture described ![here](https://devblog
 The data was normalization according to the equation ( img/255 - 0.5 ). Images were cropped by 50 rows from the top and 20 rows from the bottom. Only center camera angles were used. The data was shuffled and 20% of the data was split apart and used for validation, while the remaining 80% was used for training.
 
 
-The model was trained for 8 epochs, using a batch size = 125. Loss was calculated using MSE.  
+The model was trained for 4 epochs, using a batch size = 125. Loss was calculated using MSE.  
 
 ### Video Implementation 
 
