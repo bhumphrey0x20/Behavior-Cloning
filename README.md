@@ -9,7 +9,7 @@
 * drive.py: Udacity provided script to drive the car in autonomous mode
 * model.h5- a trained Keras model
 * writeup.md - a report writeup file
-* video.mp4 - a video recording of the simulator vehicle driving autonomously 
+* video_resub.mp4 - a video recording of the simulator vehicle driving autonomously 
 
 #### Goals 
 * Use the simulator to collect driving behavior data
