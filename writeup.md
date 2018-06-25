@@ -74,9 +74,7 @@ The original architecture used was adapted from a former Udacity student's Tenso
 |Layer11:    |Fully Connect  |
 
 
-For parameter tuning the Adam optimizer was used to automatically adjust the learning rate. Epoches were adjusted such that the Validation Loss was near it's lowest value, at 8 epochs (see Model Fitting below). 
-
-Softmax and Relu activation functions were tested for the original submission usng various epochs (5,10,15) and testing with and without dropouts, this generally resulting in underfitting and poor autonomous driving, therefore they were completely removed. 
+For parameter tuning the Adam optimizer was used to automatically adjust the learning rate. Epoches were adjusted such that the Validation Loss was near it's lowest value, at 4 epochs (see Model Fitting below). Relu activation functions were used after the first to convolutional layers. Max pooling was used after the the first three layers. 
 
 #### 2. Data Collection, Preprocessing, and Training Strategy
 
