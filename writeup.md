@@ -46,7 +46,7 @@ The python script model.py is updated code used for training and saving the conv
 
 #### 1. Model Architecture 
 
-The original architecture used was adapted from a former Udacity student's Tensorflow [Traffic Sign Classifiers project](https://github.com/jeremy-shannon/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb)- described as an adaptation of a Sermanet/LeCunn classifier. However thsi was changed to something very similar to the Nvidia architecture described ![here] (https://devblogs.nvidia.com/deep-learning-self-driving-cars/). The dropouts and keep probability values were modeled after ![this architecture](https://github.com/bhumphrey0x20/Behavior-Cloning/edit/master/writeup.md)  
+The original architecture used was adapted from a former Udacity student's Tensorflow [Traffic Sign Classifiers project](https://github.com/jeremy-shannon/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb)- described as an adaptation of a Sermanet/LeCunn classifier. However this was changed to something very similar to the Nvidia architecture described ![here](https://devblogs.nvidia.com/deep-learning-self-driving-cars/). The dropouts and keep probability values were modeled after ![this architecture](https://github.com/bhumphrey0x20/Behavior-Cloning/edit/master/writeup.md)  
 
 
 #### Table 1. Nvidia-type CNN Architeture
