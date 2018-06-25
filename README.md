@@ -20,26 +20,33 @@
 
 #### 1. Model Architecture 
 
-The architecture used was adapted from a former Udacity student's Tensorflow architecture used in the [Traffic Sign Classifiers project](https://github.com/jeremy-shannon/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb)
-
-It uses normalization of th input, three convolutional layers, concatenates the output of layer 2 and layer 3, and feeds them into a fully connected layer. Max Pooling is used after the first two convolutionals, and a dropout is used before the fully connected layer
+Uses and adaptation of the Nvidia architecture described ![here](https://devblogs.nvidia.com/deep-learning-self-driving-cars/). The dropouts and keep probability values were modeled after ![this architecture](https://github.com/bhumphrey0x20/Behavior-Cloning/edit/master/writeup.md)  
 
 
-#### Table 1. CNN Architeture
+#### Table 1. Nvidia-type CNN Architeture
 
 | Layer No  | Functions     |Dimensions                                   |
 |-----------|---------------|---------------------------------------------|
 |Layer1:    |Normalization  |(img/255 - 0.5)  |
-|           |Conv           |kernel = 3x3, strides = 2 |
-|           |Max_Pool       |kernel = 3x3, strides = 2                  |
-|Layer2:    |Conv           |kernel = 1x1, strides = 1 |
-|           |Conv           |kernel = 5x5, strides = 1 |
-|           |Max_Pool       |kernel = 2x2, strides = 3 |
-|Layer3:    |Conv           |kernel = 1x1, strides = 1 |
-|           |Conv           |kernel = 5x5, strides=2   |
-|Flatten:   |Merge of Layer 3 output and Layer 2 MaxPool output |                    |    
-|           |Dropout  | keep prob = 0.8
-|Layer4:    |Fully Connect  |
+|           |Conv           |kernel = 5x5|
+|           |Max_Pool       |kernel = 2x2, strides = 2                  |
+|Layer2:    |Conv           |kernel = 5x5|
+|           |Max_Pool       |kernel = 2x2, strides = 2                  |
+|Layer3:    |Conv           |kernel = 5x5|
+|Layer4:    |Conv           |kernel = 3x3|
+|Layer5:    |Conv           |kernel = 3x3|
+|Layer 6:   |Flattening |                    |    
+|           |Dropout  | keep prob = 0.5
+|Layer7:    |Fully Connect  |
+|           |Dropout  | keep prob = 0.5
+|Layer8:    |Fully Connect  |
+|           |Dropout  | keep prob = 0.5
+|Layer9:    |Fully Connect  |
+|           |Dropout  | keep prob = 0.5
+|Layer10:    |Fully Connect  |
+|           |Dropout  | keep prob = 0.5
+|Layer11:    |Fully Connect  |
+
 
 #### Data Collection 
 
