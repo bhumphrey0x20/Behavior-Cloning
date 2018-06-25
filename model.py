@@ -11,16 +11,18 @@ from keras.layers import Convolution2D, MaxPooling2D, Dropout
 import tensorflow as tf
 from keras import backend as k
 
-EPOCHS = 8
+EPOCHS = 4
 BATCH_SIZE = 125
-alpha = int(np.floor(20000/BATCH_SIZE))
+alpha = int(np.floor(20000/BATCH_SIZE)) # 20000
 SAMPLES_PER_EPOCH = alpha * BATCH_SIZE  
 #SAMPLES_PER_EPOCH = BATCH_SIZE * 12
 CHANNELS = 3
 crop_amount = 20
-ROWS = 160
-COLS = 320
-MAX_ANGLE = 25.0
+
+rt_corr = 0 #-0.025		# amount to correct angles in recov
+recover_angle = 0		# max angle in recovery data limit correction
+angle_correction = -0.2
+
 
 '''
 	read csv file, load data into array. 
@@ -28,15 +30,15 @@ MAX_ANGLE = 25.0
 '''
 USE_UD_Data = 1
 USE_DATA_ADDON = 0
-
+USE_RECOVER = 0
 
 data_path_1 = './data'
 data_path_2 = './data/jungle2'
 data_path_3 = './data/turns'
-data_addon = './data/dirt'
-
+data_addon = './data/rightside'
+data_recover = './data/recover2'
+addon_path =[data_addon] #, data_addon2]
 data_path= [data_path_1, data_path_2]# 		, data_path_3,data_path_4]
-
 new_measurements = []
 
 # shifts image right or left by 'shift' number of pixels
@@ -143,7 +145,10 @@ def generate_data(data_lines, steering_angles ):
 			else:
 				cam = 0						# use center cam
 			#cam = random.randint(0,2)
-			source_path = data_lines[i][cam]
+			source_path = data_lines[i][cam].lstrip().rstrip()
+			image = cv2.imread(source_path)
+			image = cv2.cvtColor(image, cv2.COLOR_BGR2YUV)
+			'''
 			if( USE_UD_Data == 1):
 				filename = source_path.split('/')[-1]
 				image_path = './IMG/'+ filename
@@ -152,6 +157,7 @@ def generate_data(data_lines, steering_angles ):
 			else:
 				image = cv2.imread(source_path)
 				image = cv2.cvtColor(image, cv2.COLOR_BGR2YUV)
+			'''
 			shape = image.shape
 			image = image[crop_t:shape[0]-crop_b, 0:shape[1], :] 	#06/22/208
 			image = cv2.resize(image, (64,64), interpolation= cv2.INTER_LINEAR)	#06/22/208
@@ -248,7 +254,7 @@ if(USE_UD_Data == 0):
 				measurements.append(line[3])
 				cnt +=1
 				#if (num_lines == MASK):	break;
-
+	print('N_lines ', len(cnt))
 else:	#use udacity simulator data
 	
 	#data = './UD/data'
@@ -259,25 +265,63 @@ else:	#use udacity simulator data
 			lines.append(line)
 			measurements.append(line[3])
 			cnt +=1
-measurements = np.float32(np.asarray(measurements))
+	print('N_lines ', cnt)
+#measurements = np.float32(np.asarray(measurements))
 
 	
 lines_addon, measurements_addon = [],[]
-if( USE_DATA_ADDON ):
-		
-#	for data in data_addon:
-	with open(data_addon + '/driving_log.csv') as file:
+if( USE_DATA_ADDON == 1 ):
+	ln_cnt = 0	
+	for data in addon_path:
+		with open(data_addon + '/driving_log.csv') as file:
+			reader = csv.reader(file)
+			for line in reader:
+				ln_cnt+=1
+				lines_addon.append(line)
+				angle = np.float32(line[3])
+				
+				if (angle < 0):
+					angle += angle_correction
+				'''
+				if (ln_cnt > 1830) & (ln_cnt < 1920):
+					if( angle >0):
+						angle += rt_corr
+				'''
+				measurements_addon.append(angle)
+				cnt +=1
+	print('N_lines_addon ', ln_cnt)
+
+recover_cnt = 0
+lines_recover, measurements_recover = [],[]
+if( USE_RECOVER ==1 ):
+	
+	with open(data_recover + '/driving_log.csv') as file:
 		reader = csv.reader(file)
 		for line in reader:
-			# only read in every other line cut frame rate from 60 fps to 30
-#			if cnt%3 == 0:
-			lines_addon.append(line)
-			measurements_addon.append(line[3])
-			cnt +=1
+			angle = np.float32(line[3])
+			
+			if (angle < recover_angle):
+				measurements_recover.append(angle + rt_corr)
+				lines_recover.append(line)
+				
+			#measurements_recover.append(angle)
+			#lines_recover.append(line)
+			recover_cnt +=1
+	print('N_lines_recover ', recover_cnt)
+	#measurements_addon = np.float32(np.asarray(measurements_addon))
+	#X_addon, y_addon = preprocess_data(lines_addon, measurements_addon)
 
-	measurements_addon = np.float32(np.asarray(measurements_addon))
-	X_addon, y_addon = preprocess_data(lines_addon, measurements_addon)
+if( USE_DATA_ADDON ==1):
+	lines = lines + lines_addon
+	
+	measurements = measurements + measurements_addon
+	#measurements = np.float32(np.asarray(measurements))
+	
+if( USE_RECOVER == 1):
+	lines = lines + lines_recover	
+	measurements = measurements + measurements_recover
 
+measurements = np.float32(np.asarray(measurements))
 
 
 print('lines_addon: %i' %(len(lines_addon)) )
@@ -306,16 +350,16 @@ valid_size = len(y_valid)
 print('train_size %i' %(train_size))
 #alpha = int(np.floor(train_size/BATCH_SIZE))
 #SAMPLES_PER_EPOCH= BATCH_SIZE*alpha
-beta = int(np.floor(valid_size/BATCH_SIZE))
-#VALID_PER_EPOCH = beta * valid_size
 
 
+'''
 if (USE_DATA_ADDON ==1):
 	addon_data = generate_data(X_addon, y_addon)
 else:
 	addon_data = None
+'''
 train_data= generate_data(X_train, y_train)	
-train_batch = generate_batch(train_data, BATCH_SIZE, addon_data)
+train_batch = generate_batch(train_data, BATCH_SIZE)
 valid_data = generate_data(X_valid, y_valid)
 valid_batch = generate_batch(valid_data, BATCH_SIZE)
 
@@ -343,6 +387,8 @@ plt.show()
 print('Done')	
 
 
+# my version of Nvidia CNN
+# https://devblogs.nvidia.com/deep-learning-self-driving-cars/
 
 #Input = Input(shape=(160,320,CHANNELS))
 Input = Input(shape=(64,64,CHANNELS))	#06/22/208
@@ -352,23 +398,37 @@ x = Lambda(lambda x: (x/255.) - 0.5)(Input)
 # cropping left and right by 20 to account for preprocessing shift
 #x= Cropping2D(cropping= ((50,20), (crop_amount,crop_amount)), input_shape=(CHANNELS,64,64))(x)	#06/22/208
 
-layer1 = Convolution2D(4, 3,3, border_mode='valid', activation='relu', name='c1')(x)
+layer1 = Convolution2D(24, 5,5, border_mode='valid', activation='relu', name='c1')(x)
 layer1 = MaxPooling2D(pool_size=(2,2), border_mode='valid', name='mx_pl1')(layer1)
 
-layer2 = Convolution2D(16, 1,1, border_mode='valid',name='c2_1')(layer1)
-layer2 = Convolution2D(32, 5,5, border_mode='valid', activation='relu',name='c2')(layer2)
+
+layer2 = Convolution2D(36, 5,5, border_mode='valid', activation='relu',name='c2')(layer1)
 layer2 = MaxPooling2D(pool_size=(2,2), border_mode='valid', name='mx_pl2')(layer2)
 #layer2 = Dropout(0.8)(layer2)
 
-layer3 = Convolution2D(44, 1,1, border_mode='valid', name='c3_1')(layer2)
-layer3 = Convolution2D(300, 5,5, border_mode='valid', name='c3')(layer3)
 
-flat_a = Flatten( )(layer2)
-flat_b = Flatten( )(layer3)
+layer3 = Convolution2D(48, 5,5, border_mode='valid', name='c3')(layer2)
+layer1 = MaxPooling2D(pool_size=(2,2), border_mode='valid', name='mx_pl1')(layer1)
 
-layer3 = merge([flat_a, flat_b], mode='concat', concat_axis=1)
-layer3 = Dropout(0.8)(layer3)
-logits = Dense(1, name='d4')(layer3)
+layer4 = Convolution2D(64, 3,3, border_mode='valid', name='c4')(layer3)
+
+layer5 = Convolution2D(64, 3,3, border_mode='valid', name='c5')(layer4)
+
+# Dropouts and keep prob values from https://github.com/bhumphrey0x20/Behavior-Cloning/edit/master/writeup.md
+
+f1 = Flatten( )(layer5)
+f1 = Dropout(0.5)(f1)
+f2 = Dense(1164)(f1)
+f2 = Dropout(0.5)(f2)
+f3 = Dense(100)(f2)
+f3 = Dropout(0.5)(f3)
+f4 = Dense(50)(f3)
+f4 = Dropout(0.5)(f4)
+f5 = Dense(10)(f4)
+
+#layer3 = merge([flat_a, flat_b], mode='concat', concat_axis=1)
+#layer3 = Dropout(0.8)(layer3)
+logits = Dense(1)(f5)
 #print(logits.get_shape() )
 
 
@@ -376,6 +436,10 @@ logits = Dense(1, name='d4')(layer3)
 # compile model and get loss function
 model = Model(input=Input, output=logits)
 model.compile(loss='mse', optimizer='adam')
+
+# uncomment line to load pretrained weights
+#model.load_weights('model_d.h5_weights')
+
 #history_loss = model.fit(X_train, y_train, validation_split=0.2, shuffle=True, nb_epoch= EPOCHS)
 history_loss = model.fit_generator(train_batch, samples_per_epoch=SAMPLES_PER_EPOCH, nb_epoch=EPOCHS, verbose=1, validation_data=valid_batch, nb_val_samples=SAMPLES_PER_EPOCH)
 
@@ -391,9 +455,9 @@ plt.ylabel('mean squared error loss')
 plt.xlabel('epoch')
 plt.legend(['training set', 'validation set'], loc='upper right')
 plt.show()	
-"""
 
-"""
+
+
 #plot histogram of steering angles from collected data
 plt.figure()
 bins = np.unique(measurements)
@@ -423,4 +487,3 @@ n_m_size = len(new_measurements)
 nz = np.count_nonzero(new_measurements)
 print('New Array len: %i' %(n_m_size))
 print('Number of Zeros: %i' %(n_m_size -nz) )
-
