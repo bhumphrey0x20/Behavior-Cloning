@@ -46,28 +46,33 @@ The python script model.py is updated code used for training and saving the conv
 
 #### 1. Model Architecture 
 
-The architecture used was adapted from a former Udacity student's Tensorflow [Traffic Sign Classifiers project](https://github.com/jeremy-shannon/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb)- described as an adaptation of a Sermanet/LeCunn classifier. The model includes normalization via the `Lamdba()` function using the equation (img/255 - 0.5), three convolutional layers and a singer linear layer (see lines 347-371 in model.py). Some adjustments were made for the resubmission. Now, the second and third convolutional layers used a 1x1 kernel, followed by a 5x5 kernel. Maxpooling is used following the the first and second convolutional layer. 
-
-The output of layer 2 and layer 3 are flattened and concatenated and passed through a dropout with a keep probablity of 0.8. Finally, a single fully connected layer is performed. 
+The original architecture used was adapted from a former Udacity student's Tensorflow [Traffic Sign Classifiers project](https://github.com/jeremy-shannon/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb)- described as an adaptation of a Sermanet/LeCunn classifier. However thsi was changed to something very similar to the Nvidia architecture described ![here] (https://devblogs.nvidia.com/deep-learning-self-driving-cars/). The dropouts and keep probability values were modeled after ![this architecture](https://github.com/bhumphrey0x20/Behavior-Cloning/edit/master/writeup.md)  
 
 
-#### Table 1. CNN Architeture
+#### Table 1. Nvidia-type CNN Architeture
 
 | Layer No  | Functions     |Dimensions                                   |
 |-----------|---------------|---------------------------------------------|
 |Layer1:    |Normalization  |(img/255 - 0.5)  |
-|           |Conv           |kernel = 3x3, strides = 2 |
-|           |Max_Pool       |kernel = 3x3, strides = 2                  |
-|Layer2:    |Conv           |kernel = 1x1, strides = 1 |
-|           |Conv           |kernel = 5x5, strides = 1 |
-|           |Max_Pool       |kernel = 2x2, strides = 3 |
-|Layer3:    |Conv           |kernel = 1x1, strides = 1 |
-|           |Conv           |kernel = 5x5, strides=2   |
-|Flatten:   |Merge of Layer 3 output and Layer 2 MaxPool output |                    |    
-|           |Dropout  | keep prob = 0.8
-|Layer4:    |Fully Connect  |
+|           |Conv           |kernel = 5x5|
+|           |Max_Pool       |kernel = 2x2, strides = 2                  |
+|Layer2:    |Conv           |kernel = 5x5|
+|           |Max_Pool       |kernel = 2x2, strides = 2                  |
+|Layer3:    |Conv           |kernel = 5x5|
+|Layer4:    |Conv           |kernel = 3x3|
+|Layer5:    |Conv           |kernel = 3x3|
+|Layer 6:   |Flattening |                    |    
+|           |Dropout  | keep prob = 0.5
+|Layer7:    |Fully Connect  |
+|           |Dropout  | keep prob = 0.5
+|Layer8:    |Fully Connect  |
+|           |Dropout  | keep prob = 0.5
+|Layer9:    |Fully Connect  |
+|           |Dropout  | keep prob = 0.5
+|Layer10:    |Fully Connect  |
+|           |Dropout  | keep prob = 0.5
+|Layer11:    |Fully Connect  |
 
-An adaptation of the Nvidia architecture discussed in class was tested however, the training and validation losses were much higher that the architecture described above, therefore it was not used. 
 
 For parameter tuning the Adam optimizer was used to automatically adjust the learning rate. Epoches were adjusted such that the Validation Loss was near it's lowest value, at 8 epochs (see Model Fitting below). 
 
