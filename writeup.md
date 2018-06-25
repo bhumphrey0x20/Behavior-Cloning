@@ -123,7 +123,7 @@ A `generate_data()` and `generate_batch()` function were created for both traini
 
 #### Model Fitting
 
-For training and testing eight epochs were used with a batch size of 125, and a samples per epoch of 20,000. These were determined by experimentally. Loss was determined using Mean Squared Error. 
+For training and testing 4 epochs were used with a batch size of 125, and a samples per epoch of 20,000. These were determined by experimentally. Loss was determined using Mean Squared Error. 
 
 #### drive.py File
 
